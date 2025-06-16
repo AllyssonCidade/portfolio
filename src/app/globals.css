@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 100 11% 5%; /* #080A07 Preto profundo */
+    --foreground: 0 0% 98%; /* #F9F9F9 Branco */
+
+    --card: 200 10% 24%; /* #364044 Cinza escuro */
+    --card-foreground: 0 0% 98%; /* #F9F9F9 Branco */
+
+    --popover: 200 10% 24%; /* #364044 Cinza escuro */
+    --popover-foreground: 0 0% 98%; /* #F9F9F9 Branco */
+
+    --primary: 100 96% 85%; /* #BCFEB3 Verde claro vibrante */
+    --primary-foreground: 100 11% 5%; /* #080A07 Preto profundo - for contrast */
+
+    --secondary: 120 13% 24%; /* #344534 Verde acinzentado */
+    --secondary-foreground: 0 0% 98%; /* #F9F9F9 Branco */
+
+    --muted: 140 2% 62%; /* #9DA09B Cinza médio */
+    --muted-foreground: 0 0% 90%; /* #F9F9F9 Branco, slightly dimmer for muted text */
+
+    --accent: 155 14% 44%; /* #628176 Verde azulado */
+    --accent-foreground: 0 0% 98%; /* #F9F9F9 Branco */
+
+    --destructive: 0 72% 51%; /* Default, seems fine for a dark theme */
+    --destructive-foreground: 0 0% 98%; /* Default */
+
+    --border: 200 10% 20%; /* Slightly darker variant of #364044 for borders */
+    --input: 200 10% 22%; /* Slightly lighter variant of #364044 for inputs */
+    --ring: 100 96% 85%; /* #BCFEB3 Verde claro vibrante - Primary for rings */
+
+    --radius: 0.5rem;
+
+    --chart-1: 100 96% 85%;  /* primary */
+    --chart-2: 155 14% 44%;  /* accent */
+    --chart-3: 0 0% 98%;     /* foreground */
+    --chart-4: 100 80% 75%;  /* lighter primary variant */
+    --chart-5: 155 25% 55%;  /* lighter accent variant */
+
+    /* Sidebar variables (can be adjusted if a sidebar is ever added) */
+    --sidebar-background: 100 11% 7%; /* Slightly lighter than main bg */
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 100 96% 85%;
+    --sidebar-primary-foreground: 100 11% 5%;
+    --sidebar-accent: 155 14% 44%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 200 10% 18%; /* Darker border for sidebar */
+    --sidebar-ring: 100 96% 85%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1; /* Enable common ligatures and contextual alternates */
+  }
+}

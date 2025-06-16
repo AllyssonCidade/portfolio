@@ -1,0 +1,49 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# Misc
+.DS_Store
+*.pem
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+jspm_packages/
+web_modules/
+apphosting.yaml.bk
+
+# Local Environment Variables
+.env
+.env*.local
+# Exclude .env files except for .env.example and other specific .env files if any.
+# For example, to include .env.production, use !.env.production
+!.env.example
+
+# Firebase
+.firebase/
+firebase-debug.log
+database-debug.log
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+# Prisma
+node_modules/.prisma/client
+# prisma/migrations is usually version controlled, so not adding it here by default.
+# If you use a local SQLite database for development, you might want to ignore it:
+# prisma/dev.db

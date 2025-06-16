@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Hero {
+  id                    Int      @id @default(autoincrement())
+  mainHeading           String
+  subHeadingPrimary     String
+  subHeadingSecondary   String
+  backgroundImageUrl    String // Stores relative path e.g. "hero-bg.jpg" or full URL
+  backgroundImageHint   String
+  ctaButton1Text        String
+  ctaButton1Link        String
+  ctaButton2Text        String
+  ctaButton2Link        String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model About {
+  id                       Int      @id @default(autoincrement())
+  imageUrl                 String // Stores relative path e.g. "profile.png" or full URL
+  imageHint                String
+  imageAlt                 String
+  title                    String
+  paragraph1               String   @db.Text
+  paragraph2               String?  @db.Text
+  resumeModalButtonText    String
+  downloadResumeButtonText String
+  downloadResumeLink       String
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  title       String   @unique // Title should be unique
+  description String   @db.Text
+  imageUrl    String // Stores relative path e.g. "service-image.png" or full URL
+  imageHint   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Article {
+  id                 String   @id @default(uuid())
+  slug               String   @unique
+  title              String
+  excerpt            String   @db.Text
+  contentMarkdown    String   @db.Text
+  imageUrl           String // Stores relative path e.g. "article-banner.jpg" or full URL
+  imageHint          String
+  originalArticleUrl String? // Link to the original article on LinkedIn, Medium, etc.
+  publishedDate      DateTime
+  author             String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Technology {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  iconName  String // Name of the Lucide icon
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Recommendation {
+  id          String   @id @default(uuid())
+  name        String
+  title       String
+  avatarUrl   String // Stores relative path e.g. "avatar.png" or full URL
+  avatarHint  String
+  message     String   @db.Text
+  linkedInUrl String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
