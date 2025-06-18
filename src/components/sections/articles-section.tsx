@@ -1,4 +1,3 @@
-
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,14 +15,14 @@ import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 
-const ARTICLES_PER_PAGE = 3; // Number of articles to load per page
+const ARTICLES_PER_PAGE = 3;
 
 export default function ArticlesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [articles, setArticles] = useState<Article[]>([]);
-  const [isLoading, setIsLoading] = useState(true); // For initial load
-  const [isLoadingMore, setIsLoadingMore] = useState(false); // For "Load More"
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -39,12 +38,15 @@ export default function ArticlesSection() {
       if (!response.ok) {
         throw new Error("Failed to fetch articles");
       }
-      const data = await response.json(); // API returns { articles: [], totalPages: number, ... }
-      
+      const data = await response.json();
+
       if (pageToFetch === 1) {
         setArticles(data.articles || []);
       } else {
-        setArticles((prevArticles) => [...prevArticles, ...(data.articles || [])]);
+        setArticles((prevArticles) => [
+          ...prevArticles,
+          ...(data.articles || []),
+        ]);
       }
       setTotalPages(data.totalPages || 1);
       setCurrentPage(data.currentPage || 1);
@@ -57,15 +59,14 @@ export default function ArticlesSection() {
       else setIsLoadingMore(false);
     }
   };
-  
-  useEffect(() => {
-    fetchArticlesPage(1); // Fetch initial page
-  }, []);
 
+  useEffect(() => {
+    fetchArticlesPage(1);
+  }, []);
 
   useEffect(() => {
     const targetRef = sectionRef.current;
-    if (isLoading || !targetRef) return; // Wait for initial load to complete
+    if (isLoading || !targetRef) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -82,8 +83,7 @@ export default function ArticlesSection() {
     return () => {
       if (targetRef) observer.unobserve(targetRef);
     };
-  }, [isLoading]); // Re-run when initial loading state changes
-
+  }, [isLoading]);
 
   const handleLoadMore = () => {
     if (currentPage < totalPages && !isLoadingMore) {
@@ -133,10 +133,15 @@ export default function ArticlesSection() {
               {articles.map((article, index) => (
                 <div
                   key={article.id}
-                  className={`${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
-                  style={{
-                    animationDelay: isVisible ? `${index * 150}ms` : undefined,
-                  }}
+                  className={`
+                        transition-all duration-700 ease-out will-change-transform
+                        ${
+                          isVisible
+                            ? "opacity-100 scale-100 visible"
+                            : "opacity-0 scale-90 invisible"
+                        }
+                      `}
+                  style={{ transitionDelay: `${index * 150}ms` }}
                 >
                   <Card className="bg-card border-border shadow-lg flex flex-col group transition-all duration-300 ease-in-out hover:shadow-primary/30 hover:border-primary/50 overflow-hidden h-full">
                     <div className="relative w-full aspect-[16/9] overflow-hidden">
@@ -189,11 +194,11 @@ export default function ArticlesSection() {
 
             {currentPage < totalPages && !isLoading && (
               <div className="mt-12 text-center">
-                <Button 
-                  onClick={handleLoadMore} 
+                <Button
+                  onClick={handleLoadMore}
                   disabled={isLoadingMore}
-                  variant="default" 
-                  size="lg" 
+                  variant="default"
+                  size="lg"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 transition-transform hover:scale-105"
                 >
                   {isLoadingMore ? (
@@ -203,7 +208,7 @@ export default function ArticlesSection() {
                     </>
                   ) : (
                     <>
-                     <PlusCircle size={20} className="mr-2" />
+                      <PlusCircle size={20} className="mr-2" />
                       Carregar Mais Artigos
                     </>
                   )}

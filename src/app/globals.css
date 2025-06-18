@@ -16,7 +16,7 @@
     --primary: 100 96% 85%; /* #BCFEB3 Verde claro vibrante */
     --primary-foreground: 100 11% 5%; /* #080A07 Preto profundo - for contrast */
 
-    --secondary: 120 13% 24%; /* #344534 Verde acinzentado */
+    --secondary: 120 13% 18%; /* #344534 Verde acinzentado */
     --secondary-foreground: 0 0% 98%; /* #F9F9F9 Branco */
 
     --muted: 140 2% 62%; /* #9DA09B Cinza médio */
@@ -34,11 +34,11 @@
 
     --radius: 0.5rem;
 
-    --chart-1: 100 96% 85%;  /* primary */
-    --chart-2: 155 14% 44%;  /* accent */
-    --chart-3: 0 0% 98%;     /* foreground */
-    --chart-4: 100 80% 75%;  /* lighter primary variant */
-    --chart-5: 155 25% 55%;  /* lighter accent variant */
+    --chart-1: 100 96% 85%; /* primary */
+    --chart-2: 155 14% 44%; /* accent */
+    --chart-3: 0 0% 98%; /* foreground */
+    --chart-4: 100 80% 75%; /* lighter primary variant */
+    --chart-5: 155 25% 55%; /* lighter accent variant */
 
     /* Sidebar variables (can be adjusted if a sidebar is ever added) */
     --sidebar-background: 100 11% 7%; /* Slightly lighter than main bg */

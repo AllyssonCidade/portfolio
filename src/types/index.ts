@@ -1,4 +1,4 @@
-import type { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from "lucide-react";
 
 export interface GitHubRepo {
   id: number;
@@ -11,7 +11,7 @@ export interface HeroData {
   mainHeading: string;
   subHeadingPrimary: string;
   subHeadingSecondary: string;
-  backgroundImageUrl: string; // Can be relative path or full URL
+  backgroundImageUrl: string;
   backgroundImageHint: string;
   ctaButton1Text: string;
   ctaButton1Link: string;
@@ -20,7 +20,7 @@ export interface HeroData {
 }
 
 export interface AboutData {
-  imageUrl: string; // Can be relative path or full URL
+  imageUrl: string;
   imageHint: string;
   imageAlt: string;
   title: string;
@@ -32,43 +32,40 @@ export interface AboutData {
 }
 
 export interface Service {
-  id: string; // Prisma will generate this
+  id: string;
   title: string;
   description: string;
-  imageUrl: string; // Can be relative path or full URL
+  imageUrl: string;
   imageHint: string;
-  // createdAt and updatedAt will be managed by Prisma
 }
 
 export interface Article {
-  id: string; // Prisma will generate this
+  id: string;
   slug: string;
   title: string;
   excerpt: string;
   contentMarkdown: string;
-  imageUrl: string; // Can be relative path or full URL
+  imageUrl: string;
   imageHint: string;
-  originalArticleUrl?: string | null; // Optional link to original article
-  publishedDate: string; // ISO date string on client, DateTime in Prisma
+  originalArticleUrl?: string | null;
+  publishedDate: string;
   author: string;
-  // createdAt and updatedAt will be managed by Prisma
 }
 
 export interface Technology {
-  id: string; // Prisma will generate this
+  id: string;
   name: string;
-  iconName: keyof typeof import('lucide-react');
+  iconName: keyof typeof import("lucide-react");
+  iconSvg?: string | null;
   color?: string;
-  // createdAt and updatedAt will be managed by Prisma
 }
 
 export interface Recommendation {
-  id: string; // Prisma will generate this
+  id: string;
   name: string;
   title: string;
-  avatarUrl: string; // Can be relative path or full URL
+  avatarUrl: string;
   avatarHint: string;
   message: string;
   linkedInUrl: string;
-  // createdAt and updatedAt will be managed by Prisma
 }

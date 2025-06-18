@@ -1,9 +1,8 @@
-
-'use client';
+"use client";
 import Image from "next/image";
 import type { Service } from "@/types";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const AUTOPLAY_INTERVAL = 7000; // 7 seconds
 
@@ -18,20 +17,23 @@ export default function ServicesSection() {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     async function fetchServices() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/services');
+        const response = await fetch("/api/services");
         if (!response.ok) {
-          throw new Error('Failed to fetch services');
+          throw new Error("Failed to fetch services");
         }
         const data: Service[] = await response.json();
         setServicesData(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred"
+        );
       } finally {
         setLoading(false);
       }
@@ -80,12 +82,11 @@ export default function ServicesSection() {
     handleInteraction();
     handleDotClick(index);
   };
-  
 
   useEffect(() => {
     const targetRef = sectionRef.current;
     if (loading || !targetRef) return;
-    
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -106,14 +107,13 @@ export default function ServicesSection() {
 
   useEffect(() => {
     if (!isInteracting && isVisible && servicesData.length > 1 && !loading) {
-      if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current); // Clear existing timer
+      if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current);
       autoplayTimerRef.current = setInterval(handleNext, AUTOPLAY_INTERVAL);
     }
     return () => {
       if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current);
     };
   }, [isInteracting, isVisible, handleNext, servicesData.length, loading]);
-
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (servicesData.length <= 1) return;
@@ -128,11 +128,11 @@ export default function ServicesSection() {
 
   const handleTouchEnd = () => {
     if (servicesData.length <= 1) return;
-    if (touchStartX.current === 0 || touchEndX.current === 0) return; 
+    if (touchStartX.current === 0 || touchEndX.current === 0) return;
 
-    if (touchStartX.current - touchEndX.current > 50) { 
+    if (touchStartX.current - touchEndX.current > 50) {
       handleNext();
-    } else if (touchStartX.current - touchEndX.current < -50) { 
+    } else if (touchStartX.current - touchEndX.current < -50) {
       handlePrev();
     }
     touchStartX.current = 0;
@@ -140,44 +140,49 @@ export default function ServicesSection() {
   };
 
   useEffect(() => {
-    // This effect ensures that the IntersectionObserver is set up after loading becomes false.
     const targetRef = sectionRef.current;
-    if (loading || !targetRef) { // Changed isLoading to loading
-        return;
+    if (loading || !targetRef) {
+      return;
     }
 
     const observer = new IntersectionObserver(
-        ([entry]) => {
-            if (entry.isIntersecting) {
-                setIsVisible(true);
-                observer.unobserve(targetRef);
-            }
-        },
-        { threshold: 0.1 }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(targetRef);
+        }
+      },
+      { threshold: 0.1 }
     );
     observer.observe(targetRef);
 
     return () => {
-        if (targetRef) {
-            observer.unobserve(targetRef);
-        }
+      if (targetRef) {
+        observer.unobserve(targetRef);
+      }
     };
-  }, [loading]); // Changed isLoading to loading
-
+  }, [loading]);
 
   if (loading) {
     return (
-      <section id="services" ref={sectionRef} className="py-20 md:py-32 bg-background scroll-mt-20 relative">
+      <section
+        id="services"
+        ref={sectionRef}
+        className="py-20 md:py-32 bg-background scroll-mt-20 relative"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-primary inline-block" />
         </div>
       </section>
     );
   }
-  
+
   if (error) {
-     return (
-      <section id="services" className="py-20 md:py-32 bg-background scroll-mt-20">
+    return (
+      <section
+        id="services"
+        className="py-20 md:py-32 bg-background scroll-mt-20"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-destructive">Error: {error}</p>
         </div>
@@ -187,42 +192,55 @@ export default function ServicesSection() {
 
   if (servicesData.length === 0 && !loading) {
     return (
-       <section id="services" ref={sectionRef} className="py-20 md:py-32 bg-background scroll-mt-20 relative">
+      <section
+        id="services"
+        ref={sectionRef}
+        className="py-20 md:py-32 bg-background scroll-mt-20 relative"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 
-              className={`font-headline text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 uppercase tracking-wider text-foreground ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}
-              style={{ animationDelay: isVisible ? `100ms` : undefined }}
+          <h2
+            className={`font-headline text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 uppercase tracking-wider text-foreground ${
+              isVisible ? "animate-fade-in" : "opacity-0"
+            }`}
+            style={{ animationDelay: isVisible ? `100ms` : undefined }}
           >
             SERVIÇOS ADAPTADOS PARA <span className="text-primary">VOCÊ</span>
           </h2>
-          <p className="text-foreground/70">Nenhum serviço disponível no momento.</p>
+          <p className="text-foreground/70">
+            Nenhum serviço disponível no momento.
+          </p>
         </div>
       </section>
     );
   }
 
-
   return (
-    <section 
-      id="services" 
-      ref={sectionRef} 
+    <section
+      id="services"
+      ref={sectionRef}
       className="py-20 md:py-32 bg-background scroll-mt-20 relative"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 
-            className={`font-headline text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 uppercase tracking-wider text-foreground ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}
-            style={{ animationDelay: isVisible ? `100ms` : undefined }}
+        <h2
+          ref={headingRef}
+          className={`font-headline text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 uppercase tracking-wider text-foreground transition-all duration-700 ease-out will-change-transform
+        ${
+          isVisible
+            ? "opacity-100 scale-100 visible"
+            : "opacity-0 scale-90 invisible"
+        }`}
+          style={{ transitionDelay: isVisible ? "100ms" : undefined }}
         >
           SERVIÇOS ADAPTADOS PARA <span className="text-primary">VOCÊ</span>
         </h2>
 
-        <div 
+        <div
           className="relative overflow-hidden rounded-lg shadow-xl"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          <div 
+          <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
@@ -231,26 +249,30 @@ export default function ServicesSection() {
                 key={service.id}
                 className="relative aspect-[4/5] md:aspect-[16/9] w-full flex-shrink-0 group"
               >
-              {service.imageUrl && (
-                <Image
-                  src={service.imageUrl.startsWith('http') ? service.imageUrl : `/images/${service.imageUrl}`}
-                  alt={service.description || service.title} 
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  data-ai-hint={service.imageHint}
-                  priority={index === 0} 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
-                />
-              )}
+                {service.imageUrl && (
+                  <Image
+                    src={
+                      service.imageUrl.startsWith("http")
+                        ? service.imageUrl
+                        : `/images/${service.imageUrl}`
+                    }
+                    alt={service.description || service.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    data-ai-hint={service.imageHint}
+                    priority={index === 0}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col items-center justify-center p-6 text-center">
                   <h3 className="font-headline text-2xl md:text-4xl text-white drop-shadow-md mb-4">
                     {service.title}
                   </h3>
-                   <ArrowUpRight
-                      size={32}
-                      className="text-white opacity-70 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"
-                      strokeWidth={2}
-                    />
+                  <ArrowUpRight
+                    size={32}
+                    className="text-white opacity-70 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"
+                    strokeWidth={2}
+                  />
                 </div>
               </div>
             ))}
@@ -280,7 +302,9 @@ export default function ServicesSection() {
                     onClick={() => handleDotClickWithInteraction(index)}
                     aria-label={`Go to service ${index + 1}`}
                     className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                      currentIndex === index ? 'bg-primary scale-125' : 'bg-muted/70 hover:bg-muted'
+                      currentIndex === index
+                        ? "bg-primary scale-125"
+                        : "bg-muted/70 hover:bg-muted"
                     }`}
                   />
                 ))}

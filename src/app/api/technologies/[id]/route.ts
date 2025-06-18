@@ -1,7 +1,7 @@
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import type { Technology } from '@/types';
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import type { Technology } from "@/types";
 
 export async function GET(
   request: NextRequest,
@@ -13,12 +13,18 @@ export async function GET(
       where: { id: techId },
     });
     if (!technology) {
-      return NextResponse.json({ message: "Technology not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Technology not found" },
+        { status: 404 }
+      );
     }
     return NextResponse.json(technology);
   } catch (error) {
     console.error(`Failed to fetch technology ${params.id}:`, error);
-    return NextResponse.json({ message: `Failed to fetch technology ${params.id}` }, { status: 500 });
+    return NextResponse.json(
+      { message: `Failed to fetch technology ${params.id}` },
+      { status: 500 }
+    );
   }
 }
 
@@ -28,35 +34,48 @@ export async function PUT(
 ) {
   try {
     const techId = params.id;
-    const updatedTechData: Partial<Omit<Technology, 'id'>> = await request.json();
+    const updatedTechData: Partial<Omit<Technology, "id">> =
+      await request.json();
 
     if (!updatedTechData.name || !updatedTechData.iconName) {
-      return NextResponse.json({ message: "Name and iconName are required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Name and iconName are required" },
+        { status: 400 }
+      );
     }
-    
+
     const technology = await prisma.technology.update({
       where: { id: techId },
       data: {
         name: updatedTechData.name,
         iconName: updatedTechData.iconName,
-        color: updatedTechData.color || '#FFFFFF',
+        iconSvg: updatedTechData.iconSvg || null,
+        color: updatedTechData.color || "#FFFFFF",
       },
     });
-    return NextResponse.json(technology);
 
+    return NextResponse.json(technology);
   } catch (error) {
     console.error(`Failed to update technology ${params.id}:`, error);
-    if ((error as any).code === 'P2025') {
-      return NextResponse.json({ message: "Technology not found" }, { status: 404 });
+    if ((error as any).code === "P2025") {
+      return NextResponse.json(
+        { message: "Technology not found" },
+        { status: 404 }
+      );
     }
-    if ((error as any).code === 'P2002' && (error as any).meta?.target?.includes('name')) {
-      // Check if the name conflict is with another record
-      const conflictingTech = await prisma.technology.findUnique({ where: { name: updatedTechData.name } });
-      if (conflictingTech && conflictingTech.id !== techId) {
-        return NextResponse.json({ message: "Another technology with this name already exists." }, { status: 409 });
-      }
+    if (
+      (error as any).code === "P2002" &&
+      (error as any).meta?.target?.includes("name")
+    ) {
+      // const conflictingTech = await prisma.technology.findUnique({ where: { name: updatedTechData.name } });
+      // if (conflictingTech && conflictingTech.id !== techId) {
+      //   return NextResponse.json({ message: "Another technology with this name already exists." }, { status: 409 });
+      // }
     }
-    return NextResponse.json({ message: `Failed to update technology ${params.id}` }, { status: 500 });
+    return NextResponse.json(
+      { message: `Failed to update technology ${params.id}` },
+      { status: 500 }
+    );
   }
 }
 
@@ -72,9 +91,15 @@ export async function DELETE(
     return NextResponse.json({ message: "Technology deleted successfully" });
   } catch (error) {
     console.error(`Failed to delete technology ${params.id}:`, error);
-    if ((error as any).code === 'P2025') {
-      return NextResponse.json({ message: "Technology not found" }, { status: 404 });
+    if ((error as any).code === "P2025") {
+      return NextResponse.json(
+        { message: "Technology not found" },
+        { status: 404 }
+      );
     }
-    return NextResponse.json({ message: `Failed to delete technology ${params.id}` }, { status: 500 });
+    return NextResponse.json(
+      { message: `Failed to delete technology ${params.id}` },
+      { status: 500 }
+    );
   }
 }

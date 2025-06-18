@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
-import type { GitHubRepo } from '@/types';
-import ProjectCard from '@/components/project-card';
-import { Loader2, PlusCircle } from 'lucide-react';
+import { useEffect, useState, useRef } from "react";
+import type { GitHubRepo } from "@/types";
+import ProjectCard from "@/components/project-card";
+import { Loader2, PlusCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Terminal } from "lucide-react";
@@ -22,8 +22,8 @@ export default function ProjectsSection() {
 
   useEffect(() => {
     const targetRef = sectionRef.current;
-    if (loading || !targetRef) { // Check loading state here
-        return;
+    if (loading || !targetRef) {
+      return;
     }
 
     const observer = new IntersectionObserver(
@@ -33,7 +33,7 @@ export default function ProjectsSection() {
           observer.unobserve(targetRef);
         }
       },
-      { threshold: 0.05 } 
+      { threshold: 0.05 }
     );
 
     observer.observe(targetRef);
@@ -43,17 +43,20 @@ export default function ProjectsSection() {
         observer.unobserve(targetRef);
       }
     };
-  }, [loading]); // Depend on loading
-
+  }, [loading]);
 
   useEffect(() => {
     async function fetchRepos() {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch('https://api.github.com/users/AllyssonCidade/repos?sort=updated&direction=desc');
+        const response = await fetch(
+          "https://api.github.com/users/AllyssonCidade/repos?sort=updated&direction=desc"
+        );
         if (!response.ok) {
-          throw new Error(`Falha ao buscar repositórios: ${response.statusText}`);
+          throw new Error(
+            `Falha ao buscar repositórios: ${response.statusText}`
+          );
         }
         const data = await response.json();
         setAllRepos(data);
@@ -79,11 +82,20 @@ export default function ProjectsSection() {
   };
 
   return (
-    <section id="projects" ref={sectionRef} className="py-20 md:py-32 bg-background scroll-mt-20">
+    <section
+      id="projects"
+      ref={sectionRef}
+      className="py-20 md:py-32 bg-background scroll-mt-20"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div 
-          className={`mb-12 md:mb-16 flex flex-col md:flex-row justify-between items-start md:items-end ${isSectionVisible ? 'animate-fade-in' : 'opacity-0'}`}
-          style={{ animationDelay: isSectionVisible ? '0ms' : undefined }}
+        <div
+          className={`mb-12 md:mb-16 flex flex-col md:flex-row justify-between items-start md:items-end ${
+            isSectionVisible
+              ? "opacity-100 scale-100 visible transition-all duration-700 ease-out"
+              : "opacity-0 scale-90 invisible"
+          }
+`}
+          style={{ animationDelay: isSectionVisible ? "0ms" : undefined }}
         >
           <div className="mb-6 md:mb-0 md:text-left">
             <p className="text-muted-foreground text-base md:text-lg">
@@ -100,18 +112,20 @@ export default function ProjectsSection() {
         {loading && (
           <div className="flex justify-center items-center py-10">
             <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="ml-4 text-xl text-foreground/80">Carregando projetos...</p>
+            <p className="ml-4 text-xl text-foreground/80">
+              Carregando projetos...
+            </p>
           </div>
         )}
 
         {error && (
-           <Alert variant="destructive" className="max-w-2xl mx-auto">
-             <Terminal className="h-4 w-4" />
-             <AlertTitle>Erro ao Carregar Projetos</AlertTitle>
-             <AlertDescription>
-               {error} Por favor, tente novamente mais tarde.
-             </AlertDescription>
-           </Alert>
+          <Alert variant="destructive" className="max-w-2xl mx-auto">
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>Erro ao Carregar Projetos</AlertTitle>
+            <AlertDescription>
+              {error} Por favor, tente novamente mais tarde.
+            </AlertDescription>
+          </Alert>
         )}
 
         {!loading && !error && allRepos.length === 0 && (
@@ -119,7 +133,7 @@ export default function ProjectsSection() {
             Nenhum projeto encontrado no GitHub no momento.
           </p>
         )}
-        
+
         {!loading && !error && visibleRepos.length > 0 && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -128,11 +142,20 @@ export default function ProjectsSection() {
               ))}
             </div>
             {visibleCount < allRepos.length && (
-              <div className={`text-center mt-12 ${isSectionVisible ? 'animate-fade-in-up' : 'opacity-0'}`} style={{ animationDelay: isSectionVisible ? `${visibleRepos.length * 100 + 200}ms` : undefined }}>
-                <Button 
-                  onClick={handleLoadMore} 
-                  variant="default" 
-                  size="lg" 
+              <div
+                className={`text-center mt-12 ${
+                  isSectionVisible ? "animate-fade-in-up" : "opacity-0"
+                }`}
+                style={{
+                  animationDelay: isSectionVisible
+                    ? `${visibleRepos.length * 100 + 200}ms`
+                    : undefined,
+                }}
+              >
+                <Button
+                  onClick={handleLoadMore}
+                  variant="default"
+                  size="lg"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 transition-transform hover:scale-105 w-full max-w-xs sm:max-w-sm mx-auto text-lg py-3 rounded-md shadow-md"
                 >
                   <PlusCircle size={20} className="mr-2" />
